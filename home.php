@@ -84,7 +84,7 @@ if($_SESSION['login_type'] != 1)
                   </td>
                   <td><span class="badge badge-primary"><?php echo $stat[$row['status']] ?></span></td>
                   <td>
-                    <button class="btn btn-sm btn-outline-primary view_project" type="button" data-id="<?php echo $row['id'] ?>">Просмотр</button>
+                    <a class="btn btn-sm btn-outline-primary view_project" href="./index.php?page=view_project&id=<?php echo $row['id'] ?>" data-id="<?php echo $row['id'] ?>">Просмотр</a>
                   </td>
                 </tr>
                 <?php endwhile; ?>
@@ -141,8 +141,8 @@ for($i = 0; $i <= 4; $i++){
                 <h3 class="card-title"><i class="fa fa-chart-bar mr-1"></i> Статистика задач</h3>
             </div>
             <div class="card-body">
-                <div style="height: 330px;">
-                    <canvas id="taskChart" style="min-height: 220px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <div style="height: 400px;">
+                    <canvas id="taskChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
                 </div>
             </div>
         </div>
