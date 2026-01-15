@@ -99,6 +99,8 @@
 						  		echo "<span class='badge badge-primary'>В работе</span>";
                         	}elseif($row['status'] == 3){
 						  		echo "<span class='badge badge-success'>Завершен</span>";
+                        	}elseif($row['status'] == 4){
+						  		echo "<span class='badge badge-danger'>Просрочен</span>";
                         	}
                         	?>
                         </td>
