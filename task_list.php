@@ -93,52 +93,45 @@ if($_SESSION['login_type'] != 1)
             </div>
           </div>
         </div>
-        </div>
+    </div>
+    
         <div class="col-md-4">
             <!-- Statistics Card -->
             <div class="card card-outline card-info">
                 <div class="card-header">
                     <b>Статистика</b>
                 </div>
-                <div class="card-body">
+                <div class="card-body"><div class style="height: 50px;"></div>
                     <div class="row text-center">
                         <div class="col-6 border-right">
                             <div class="description-block border-right">
-                                <h5 class="description-header"><?php 
+                                <h4 class="description-header"><?php 
                                     $proj = $conn->query("SELECT * FROM project_list $where")->num_rows;
                                     echo $proj;
-                                ?></h5>
-                                <span class="description-text">Всего Проектов</span>
+                                ?></h4>
+                                <span class="description-text"><h5>Всего Проектов</h5></span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="description-block">
-                                <h5 class="description-header"><?php 
+                                <h4 class="description-header"><?php 
                                     $tsk = $conn->query("SELECT tl.* FROM task_list tl JOIN project_list p ON tl.project_id = p.id $where2")->num_rows;
                                     echo $tsk;
-                                ?></h5>
-                                <span class="description-text">Всего Задач</span>
+                                ?></h4>
+                                <span class="description-text"><h5>Всего Задач</h5></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-      </div>
-
-<?php 
-// Получаем данные из базы для диаграммы
-$status_counts = array();
-for($i = 0; $i <= 4; $i++){
-    $status_counts[$i] = $conn->query("SELECT * FROM task_list where status = $i")->num_rows;
-}
-?>
+    </div>
 
 <div class="row">
 <div class="col-md-6">
         <div class="card card-outline card-primary" style="height: 400px;">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-chart-bar mr-1"></i> Статистика задач</h3>
+                <p class="card-title"><i class="fa fa-chart-bar mr-1"></i> <b>Статистика задач</b></p>
             </div>
             <div class="card-body">
                 <div style="height: 400px;">
@@ -186,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="col-md-6">
             <div class="card card-outline card-danger">
                 <div class="card-header">
-                    <h5><i class="fa fa-calendar-alt mr-1"></i><b> Дедлайны</b></h5>
+                    <i class="fa fa-calendar-alt mr-1"></i><b> Дедлайны</b>
                 </div>
                 <div class="card-body p-2">
                     <div class="calendar-container" id="deadlineCalendar">
