@@ -126,11 +126,67 @@ if($_SESSION['login_type'] != 1)
         </div>
       </div>
 
+<?php 
+// Получаем данные из базы для диаграммы
+$status_counts = array();
+for($i = 0; $i <= 4; $i++){
+    $status_counts[$i] = $conn->query("SELECT * FROM task_list where status = $i")->num_rows;
+}
+?>
+
+<div class="row">
+<div class="col-md-6">
+        <div class="card card-outline card-primary" style="height: 400px;">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa fa-chart-bar mr-1"></i> Статистика задач</h3>
+            </div>
+            <div class="card-body">
+                <div style="height: 330px;">
+                    <canvas id="taskChart" style="min-height: 220px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById('taskChart').getContext('2d');
+    
+    // Данные для диаграммы (эти значения можно подставить из PHP)
+    var taskData = {
+        labels: ['В ожидании', 'В процессе', 'Завершено', 'На удержании', 'Просрочено'],
+        datasets: [{
+            data: [
+                <?php echo $conn->query("SELECT * FROM task_list where status = 0")->num_rows; ?>,
+                <?php echo $conn->query("SELECT * FROM task_list where status = 1")->num_rows; ?>,
+                <?php echo $conn->query("SELECT * FROM task_list where status = 2")->num_rows; ?>,
+                <?php echo $conn->query("SELECT * FROM task_list where status = 3")->num_rows; ?>,
+                <?php echo $conn->query("SELECT * FROM task_list where status = 4")->num_rows; ?>
+            ],
+            backgroundColor: ['#6c757d', '#17a2b8', '#28a745', '#ffc107', '#dc3545'],
+        }]
+    };
+
+    var myChart = new Chart(ctx, {
+        type: 'pie', // Можно изменить на 'bar' или 'doughnut'
+        data: taskData,
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'right'
+            }
+        }
+    });
+});
+</script>
+
         <!-- Monthly Deadlines Calendar -->
         <div class="col-md-6">
             <div class="card card-outline card-danger">
                 <div class="card-header">
-                    <b>Дедлайны</b>
+                    <h5><i class="fa fa-calendar-alt mr-1"></i><b> Дедлайны</b></h5>
                 </div>
                 <div class="card-body p-2">
                     <div class="calendar-container" id="deadlineCalendar">
