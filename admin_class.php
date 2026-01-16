@@ -311,6 +311,11 @@ Class Action {
 					$data .= ", $k='$v' ";
 				}
 			}
+			if(isset($_FILES['comment_file']) && $_FILES['comment_file']['tmp_name'] != ''){
+    		$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['comment_file']['name'];
+   			 $move = move_uploaded_file($_FILES['comment_file']['tmp_name'], 'assets/uploads/'.$fname);
+    		$data .= ", attachment = '$fname' ";
+			}
 		}
 		$dur = abs(strtotime("2020-01-01 ".$end_time)) - abs(strtotime("2020-01-01 ".$start_time));
 		$dur = $dur / (60 * 60);
