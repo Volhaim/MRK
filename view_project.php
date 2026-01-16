@@ -195,6 +195,8 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 					                      Действие
 					                    </button>
 					                    <div class="dropdown-menu" style="">
+										  <a class="dropdown-item new_productivity" data-pid = '<?php echo $row['pid'] ?>' data-tid = '<?php echo $row['id'] ?>'  data-task = '<?php echo ucwords($row['task']) ?>'  href="javascript:void(0)">Добавить комментарий</a>
+								<div class="dropdown-divider"></div>
 					                      <a class="dropdown-item view_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>"  data-task="<?php echo $row['task'] ?>">Просмотр</a>
 					                      <div class="dropdown-divider"></div>
 					                      <?php if($_SESSION['login_type'] != 3): ?>
