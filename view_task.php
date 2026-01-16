@@ -9,11 +9,11 @@ if(isset($_GET['id'])){
 ?>
 <div class="container-fluid">
 	<dl>
-		<dt><b class="border-bottom border-primary">Task</b></dt>
+		<dt><b class="border-bottom border-primary">Задача</b></dt>
 		<dd><?php echo ucwords($task) ?></dd>
 	</dl>
 	<dl>
-		<dt><b class="border-bottom border-primary">Status</b></dt>
+		<dt><b class="border-bottom border-primary">Статус</b></dt>
 		<dd>
 			<?php 
         	if($status == 1){
@@ -22,12 +22,14 @@ if(isset($_GET['id'])){
 		  		echo "<span class='badge badge-primary'>В работе</span>";
         	}elseif($status == 3){
 		  		echo "<span class='badge badge-success'>Завершен</span>";
-        	}
+        	}elseif($status == 4){
+				echo "<span class='badge badge-danger'>Просрочен</span>";
+            }
         	?>
 		</dd>
 	</dl>
 	<dl>
-		<dt><b class="border-bottom border-primary">Description</b></dt>
+		<dt><b class="border-bottom border-primary">Описание</b></dt>
 		<dd><?php echo html_entity_decode($description) ?></dd>
 	</dl>
 </div>
