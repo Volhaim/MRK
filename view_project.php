@@ -185,7 +185,9 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 									  		echo "<span class='badge badge-primary'>В работе</span>";
 			                        	}elseif($row['status'] == 3){
 									  		echo "<span class='badge badge-success'>Завершен</span>";
-			                        	}
+			                        	}elseif($row['status'] == 4){
+						  					echo "<span class='badge badge-danger'>Просрочен</span>";
+                        				}
 			                        	?>
 			                        </td>
 			                        <td class="text-center">
@@ -213,6 +215,64 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			</div>
 		</div>
 	</div>
+
+	<div class="row mt-4">
+    <div class="col-lg-12">
+        <h4>Канбан-доска</h4>
+        <div class="kanban-board d-flex">
+            <?php 
+            $statuses = [1 => 'Ожидание', 2 => 'В процессе', 3 => 'Завершено'];
+            foreach($statuses as $s_id => $s_name): 
+            ?>
+            <div class="kanban-column flex-fill p-2 bg-light m-1 border rounded">
+                <h6><?php echo $s_name ?></h6>
+                <div class="kanban-tasks" data-status="<?php echo $s_id ?>" style="min-height: 200px;">
+                    <?php 
+                    $tasks = $conn->query("SELECT * FROM task_list WHERE project_id = $id AND status = $s_id");
+                    while($row = $tasks->fetch_assoc()):
+                    ?>
+                    <div class="card p-2 mb-2 draggable-task" data-id="<?php echo $row['id'] ?>" title="Нажмите для деталей">
+                        <?php echo $row['task'] ?>
+                        <div class="task-hover-info d-none">
+                            <small><?php echo html_entity_decode($row['description']) ?></small>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+			<script>
+			// Подключите SortableJS через CDN в main файле
+$('.kanban-tasks').each(function() {
+    new Sortable(this, {
+        group: 'tasks',
+        animation: 150,
+        onEnd: function (evt) {
+            var task_id = $(evt.item).data('id');
+            var status = $(evt.to).data('status');
+            // AJAX запрос на обновление статуса задачи
+            $.ajax({
+                url: 'ajax.php?action=update_task_status',
+                method: 'POST',
+                data: {id: task_id, status: status},
+                success: function(resp){
+                    if(resp == 1) alert_toast("Статус обновлен","success")
+                }
+            })
+        }
+    });
+});
+
+// Ховер-эффект
+$('.draggable-task').hover(
+    function() { $(this).find('.task-hover-info').removeClass('d-none').addClass('task-popup'); },
+    function() { $(this).find('.task-hover-info').addClass('d-none'); }
+);
+</script>
+        </div>
+    </div>
+</div>
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
