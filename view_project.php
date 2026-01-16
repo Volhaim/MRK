@@ -24,27 +24,28 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 <div class="col-lg-12">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="callout callout-info">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-sm-6">
-							<dl>
-								<dt><b class="border-bottom border-primary">Название</b></dt>
-								<dd><?php echo ucwords($name) ?></dd>
-								<dt><b class="border-bottom border-primary">Описание</b></dt>
-								<dd><?php echo html_entity_decode($description) ?></dd>
-							</dl>
-						</div>
-						<div class="col-md-6">
-							<dl>
-								<dt><b class="border-bottom border-primary">Начало</b></dt>
-								<dd><?php echo date("F d, Y",strtotime($start_date)) ?></dd>
-							</dl>
-							<dl>
-								<dt><b class="border-bottom border-primary">Конец</b></dt>
-								<dd><?php echo date("F d, Y",strtotime($end_date)) ?></dd>
-							</dl>
-							<dl>
+			<div class="row">
+    <div class="col-md-8">
+        <div class="callout callout-info" style="min-height: 370px;">
+            <div class="col-md-12">
+                <dl>
+                    <dt><b class="border-bottom border-primary">Название проекта</b></dt>
+                    <dd><?php echo ucwords($name) ?></dd>
+                    <dt><b class="border-bottom border-primary">Описание</b></dt>
+                    <dd><p style="overflow-y: scroll"><?php echo html_entity_decode($description) ?></p></dd>
+                </dl>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <dl>
+                        <dt><b class="border-bottom border-primary">Начало</b></dt>
+                        <dd><?php echo date("M d, Y",strtotime($start_date)) ?></dd>
+                        <dt><b class="border-bottom border-primary">Конец</b></dt>
+                        <dd><?php echo date("M d, Y",strtotime($end_date)) ?></dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+<dl>
 								<dt><b class="border-bottom border-primary">Статус</b></dt>
 								<dd>
 									<?php
@@ -64,7 +65,6 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 									?>
 								</dd>
 							</dl>
-							<dl>
 								<dt><b class="border-bottom border-primary">Исполнитель</b></dt>
 								<dd>
 									<?php if(isset($manager['id'])) : ?>
@@ -81,6 +81,30 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 					</div>
 				</div>
 			</div>
+
+			    <div class="col-md-4">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <span><b>Последние активности</b></span>
+            </div>
+            <div class="card-body p-2" style="max-height: 315px; overflow-y: scroll">
+                <ul class="list-group list-group-flush" id="activity-list">
+                    <?php 
+                    $activities = $conn->query("SELECT 'task' as type, task as title, date_created FROM task_list WHERE project_id = $id 
+                                               UNION SELECT 'comment' as type, comment as title, date_created FROM user_productivity WHERE project_id = $id 
+                                               ORDER BY date_created DESC LIMIT 10");
+                    while($row = $activities->fetch_assoc()):
+                    ?>
+                    <li class="list-group-item">
+                        <small class="text-muted"><?php echo date("d.m H:i", strtotime($row['date_created'])) ?></small><br>
+                        <b><?php echo $row['type'] == 'task' ? '[Задача]' : '[Коммент]' ?></b> <?php echo substr(strip_tags($row['title']), 0, 50) ?>...
+                    </li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 		</div>
 	</div>
 	<div class="row">
@@ -92,7 +116,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						<!-- <button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="manage_team">Manage</button> -->
 					</div>
 				</div>
-				<div class="card-body">
+				<div class="card-body" style="min-height: 180px; overflow-y: scroll">
 					<ul class="users-list clearfix">
 						<?php 
 						if(!empty($user_ids)):
@@ -118,7 +142,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 					<span><b>Список Задач:</b></span>
 					<?php if($_SESSION['login_type'] != 3): ?>
 					<div class="card-tools">
-						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> New Task</button>
+						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> Новая Задача</button>
 					</div>
 				<?php endif; ?>
 				</div>
