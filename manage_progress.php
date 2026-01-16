@@ -53,6 +53,9 @@ if(isset($_GET['id'])){
 						<textarea name="comment" id="" cols="30" rows="10" class="summernote form-control" required="">
 							<?php echo isset($comment) ? $comment : '' ?>
 						</textarea>
+							<div class="form-group">
+    						<input type="file" name="comment_file" class="form-control-file">
+						</div>
 					</div>
 				</div>
 			</div>
